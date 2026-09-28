@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <link rel="icon" type="image/png" href="/static/images/3d-city-bus-front-view-isolate-on-transparency-background-png.png">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Patrones creacionales</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body background=""></body>
+<body class="pipboy">
+  <header class="hud">
+    <button onclick="singleton()" style="font-size: 10px;"> Probar conexión Base de Datos (Singleton) </button>
+    <h1>IMPLEMENTACION DE PATRONES CREACIONALES</h1> 
+    <form action="/reboot" method="POST">
+        <button type="submit" style="font-size: 10px;">
+            Reiniciar entorno
+        </button>
+    </form>
+  </header>
+  <main class="container">
+
+    <section class="card">
+      <div class="texto">
+        <center><h2>Patron Factory Method</h2></center>
+      </div>
+
+<form action="/factory" method="post" id="empleadoForm">
+      <h2>Registro de Empleado</h2>
+      
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="tipo_documento">Tipo de Documento:</label>
+        <select id="tipo_documento" name="tipo_documento" required>
+          <option value="">-- Selecciona --</option>
+          <option value="Cedula">Cedula</option>
+          <option value="Pasaporte">Pasaporte</option>
+          <option value="RFC">RFC</option>
+          <option value="NIT">NIT</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="num_documento">Número de Documento:</label>
+        <input type="text" id="num_documento" name="num_documento" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="direccion">Dirección:</label>
+        <input type="text" id="direccion" name="direccion" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="fecha_ingreso">Fecha de Ingreso:</label>
+        <input type="date" id="fecha_ingreso" name="fecha_ingreso" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="cargo">Cargo:</label>
+        <select id="cargo" name="cargo" required onCambioCargo(this.value">
+          <option value="">-- Selecciona --</option>
+          <option value="Conductor">Conductor</option>
+          <option value="Mecanico">Mecánico</option>
+          <option value="Contador">Contador</option>
+          <option value="Administrador">Administrador</option>
+          <option value="AuxiliarTerminal">Auxiliar de Terminal</option>
+        </select>
+      </div>
+      
+      <!-- Campos adicionales para Conductor (ocultos por defecto) -->
+      <div id="conductorFields" style="display: none;">
+        <div class="form-group">
+          <label for="num_licencia">Número de Licencia:</label>
+          <input type="text" id="num_licencia" name="num_licencia">
+        </div>
+        <div class="form-group">
+          <label for="categoria">Categoría:</label>
+          <input type="text" id="categoria" name="categoria">
+        </div>
+        <div class="form-group">
+          <label for="fecha_vencimiento">Fecha de Vencimiento:</label>
+          <input type="date" id="fecha_vencimiento" name="fecha_vencimiento">
+        </div>
+      </div>
+      
+      <div class="botones">
+        <center>
+          <input type="submit" value="Registrar / Submit">
+          <input type="reset" value="Limpiar / Reset">
+        </center>
+      </div>
+    </form>
+<script>
+document.getElementById('cargo').addEventListener('change', function() {
+  var conductorFields = document.getElementById('conductorFields');
+  if (this.value === 'Conductor') {
+    conductorFields.style.display = 'block';
+  } else {
+    conductorFields.style.display = 'none';
+  }
+});
+
+</script>
+
+    </section>
+
+    <section class="card1">
+
+  <center>
+      <h2>Empleados registrados</h2>
+  </center>
+
+  <div class="tabla-empleados">
+
+      {% if empleados %}
+          <table>
+              <thead>
+                  <tr>
+                      <th>Nombre</th>
+                      <th>Apellido</th>
+                      <th>Tipo Documento</th>
+                      <th>N° Documento</th>
+                      <th>Teléfono</th>
+                      <th>Email</th>
+                      <th>Dirección</th>
+                      <th>Fecha Ingreso</th>
+                      <th>Cargo</th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  {% for empleado in empleados %}
+                  <tr>
+                      <td>{{ empleado.nombre }}</td>
+                      <td>{{ empleado.apellido }}</td>
+                      <td>{{ empleado.tipo_documento }}</td>
+                      <td>{{ empleado.num_documento }}</td>
+                      <td>{{ empleado.telefono }}</td>
+                      <td>{{ empleado.email }}</td>
+                      <td>{{ empleado.direccion }}</td>
+                      <td>{{ empleado.fecha_ingreso }}</td>
+                      <td>{{ empleado.cargo }}</td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+
+      {% else %}
+          <p>No hay empleados registrados.</p>
+      {% endif %}
+
+  </div>
+
+
+<center>
+    <h2>Conductores registrados</h2>
+</center>
+
+<div class="tabla-conductores">
+
+    {% if conductores %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Tipo Documento</th>
+                    <th>N° Documento</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Dirección</th>
+                    <th>Fecha Ingreso</th>
+                    <th>Cargo</th>
+                    <th>N° Licencia</th>
+                    <th>Categoría</th>
+                    <th>Fecha Vencimiento</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for conductor in conductores %}
+
+                <tr>
+                    <td>{{ conductor.nombre }}</td>
+                    <td>{{ conductor.apellido }}</td>
+                    <td>{{ conductor.tipo_documento }}</td>
+                    <td>{{ conductor.num_documento }}</td>
+                    <td>{{ conductor.telefono }}</td>
+                    <td>{{ conductor.email }}</td>
+                    <td>{{ conductor.direccion }}</td>
+                    <td>{{ conductor.fecha_ingreso }}</td>
+                    <td>{{ conductor.cargo }}</td>
+                    <td>{{ conductor.num_licencia }}</td>
+                    <td>{{ conductor.categoria }}</td>
+                    <td>{{ conductor.fecha_vencimiento }}</td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    {% else %}
+
+        <p>No hay conductores registrados.</p>
+
+    {% endif %}
+
+</div>
+
+
+<center>
+    <h2>Viajes registrados</h2>
+</center>
+
+<div class="tabla-viajes">
+
+    {% if viajes %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha de Salida</th>
+                    <th>Hora de Salida</th>
+                    <th>Fecha de Llegada</th>
+                    <th>Hora de Llegada</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for viaje in viajes %}
+
+                <tr>
+                    <td>{{ viaje.fecha_salida }}</td>
+                    <td>{{ viaje.hora_salida }}</td>
+                    <td>{{ viaje.fecha_llegada }}</td>
+                    <td>{{ viaje.hora_llegada }}</td>
+                    <td>{{ viaje.estado }}</td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    {% else %}
+
+        <p>No hay viajes registrados.</p>
+
+    {% endif %}
+
+</div>
+
+
+
+
+
+    </section>
+
+    <section class="card2">
+<center>
+    <h2>Patron Builder</h2>
+</center>
+
+<form action="/builder" method="post" id="viajeForm">
+
+    <h2>Registro de Viajes</h2>
+
+    <!-- Fecha de salida -->
+    <div class="form-group">
+        <label for="fecha_salida">Fecha de Salida:</label>
+        <input
+            type="date"
+            id="fecha_salida"
+            name="fecha_salida"
+            required
+        >
+    </div>
+
+    <!-- Hora de salida -->
+    <div class="form-group">
+        <label for="hora_salida">Hora de Salida:</label>
+        <input
+            type="time"
+            id="hora_salida"
+            name="hora_salida"
+            required
+        >
+    </div>
+
+    <!-- Fecha de llegada -->
+    <div class="form-group">
+        <label for="fecha_llegada">Fecha de Llegada:</label>
+        <input
+            type="date"
+            id="fecha_llegada"
+            name="fecha_llegada"
+            required
+        >
+    </div>
+
+    <!-- Hora de llegada -->
+    <div class="form-group">
+        <label for="hora_llegada">Hora de Llegada:</label>
+        <input
+            type="time"
+            id="hora_llegada"
+            name="hora_llegada"
+    >
+    </div>
+
+    <!-- Estado -->
+    <div class="form-group">
+        <label for="estado">Estado:</label>
+
+        <select
+            id="estado"
+            name="estado"
+            required
+        >
+            <option value="">-- Selecciona --</option>
+            <option value="iniciando">Iniciando</option>
+            <option value="en marcha">En marcha</option>
+            <option value="finalizado">Finalizado</option>
+        </select>
+    </div>
+
+    <div class="botones">
+        <center>
+            <input
+                type="submit"
+                value="Registrar Viaje"
+            >
+
+            <input
+                type="reset"
+                value="Limpiar / Reset"
+            >
+        </center>
+    </div>
+
+</form>
+<center><h2>Patron prototype</h2></center>
+
+<center>
+    <form action="/prototype" method="POST">
+        <button type="submit" style="font-size: 12px;">
+            Clonar ultimo viaje
+        </button>
+    </form>
+</center>
+
+
+
+
+    </section>
+
+
+  </main>
+
+  <footer class="footer">
+    <small>Juan Lopez, Daniel Oviedo y Kenneth Ñustes</small>
+  </footer>
+</body>
+<script>
+function singleton() {
+  fetch(`/singleton`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.mensaje) {
+                alert(data.mensaje);
+            }
+    });
+  }
+</script>
+</html>

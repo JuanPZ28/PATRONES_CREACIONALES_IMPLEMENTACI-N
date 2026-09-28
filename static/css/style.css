@@ -1,0 +1,347 @@
+body.pipboy {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f0f2f5;
+}
+
+
+.hud {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                 Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+                 'Helvetica Neue', sans-serif;
+    color: white;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    background-color: darkblue;
+    display:flex ;
+    gap: 100px;
+}
+
+
+.hud h1 { margin: 0; font-size: 2.2rem; letter-spacing: 2px; }
+.subtitle { margin: 0; font-size: 2rem; color: #00ff00; }
+
+.container {
+  display: flex;
+  gap: 20px;
+  padding: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 2500px;
+  min-width: 0px;
+  box-sizing: border-box;
+  background: #f8f9fa;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 16px;
+  flex: 0 0 500px;
+  max-width: 500px;
+  min-width: 300px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.card h2 {
+  margin: 0 0 16px 0;
+  color: #333;
+  font-size: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 8px;
+}
+
+
+
+.card1{
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 16px;
+  flex: 0 0 420px;
+  min-width: 300px;
+  max-width: 500px;
+  max-height: 920px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card1 h2 { margin: 0 0 16px 0; color: #333; font-size: 1.5rem; border-bottom: 1px solid #e0e0e0; padding-bottom: 8px; }
+.card1:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+.card2{
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 16px;
+  flex: 0 0 420px;
+  min-width: 300px;
+  max-width: 350px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  max-height: 920px;
+}
+
+.card2 h2 { margin: 0 0 16px 0; color: #333; font-size: 1.5rem; border-bottom: 1px solid #e0e0e0; padding-bottom: 8px; }
+.card2:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+label { display:block; margin:8px 0 4px; font-size:0.9rem;  }
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background: #f8f9fa;
+  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: #00aa00;
+  box-shadow: 0 0 0 3px rgba(0, 170, 0, 0.1);
+}
+
+.form-group input[type="date"] {
+  padding: 8px;
+}
+
+button {
+  padding: 10px 25px;
+  font-family: "VT323", "Roboto Mono", monospace;
+  font-size: 18px;
+  background: darkblue;
+  color:white;
+  border: 2px solid white;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+  width: 100%;
+  max-width: 200px;
+}
+
+button:hover { 
+  background:  rgb(0, 0, 234);
+  color:  white;
+  filter: brightness(1.1); 
+}
+
+
+
+/*------------------Estilos de tabla de informacion de la tabla transporte*/
+.tabla-transporte {
+  width: 100%;
+  border-collapse: collapse;
+  color: #00ff00;
+  font-size: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid #00aa00;
+  margin-top: 15px;
+}
+
+.tabla-transporte th, .tabla-transporte td {
+  border: 1px solid #00aa00;
+  padding: 8px;
+  text-align: center;
+}
+
+.tabla-transporte th {
+  background: #003300;
+  color: #00ff00;
+}
+#log-panel{
+  background:black; 
+  color:#00ff00; 
+  padding:10px; 
+  height:300px; 
+  overflow-y:auto; 
+  font-family: "VT323", "Roboto Mono", monospace;
+  font-size: 20px;
+  border: 10px solid #00aa00;  
+  background: 
+    linear-gradient(180deg, rgba(32, 175, 13, 0.36), rgba(10, 20, 10, 0.6))"
+}
+
+.footer {
+  color: white;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  text-align: center;
+  
+  background-color: darkblue;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  
+  margin-bottom: 0;
+}
+
+/* Estilos para la tabla en card1 */
+.tabla-empleados {
+  max-width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.tabla-empleados table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  background: #fff;
+}
+
+.tabla-empleados th, .tabla-empleados td {
+  border: 1px solid #dee2e6;
+  padding: 12px 8px;
+  text-align: left;
+  color: #333;
+}
+
+.tabla-empleados th {
+  background: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.tabla-empleados tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tabla-empleados tbody tr:nth-of-type(odd) {
+  background: #f8f9fa;
+}
+
+.tabla-empleados tbody tr:last-of-type {
+  border-bottom: 2px solid #dee2e6;
+}
+
+.tabla-empleados tbody td {
+  font-size: 0.9rem;
+}
+
+
+
+
+.tabla-conductores {
+  max-width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.tabla-conductores table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  background: #fff;
+}
+
+.tabla-conductores th, .tabla-conductores td {
+  border: 1px solid #dee2e6;
+  padding: 12px 8px;
+  text-align: left;
+  color: #333;
+}
+
+.tabla-conductores th {
+  background: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.tabla-conductores tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tabla-conductores tbody tr:nth-of-type(odd) {
+  background: #f8f9fa;
+}
+
+.tabla-conductores tbody tr:last-of-type {
+  border-bottom: 2px solid #dee2e6;
+}
+
+.tabla-conductores tbody td {
+  font-size: 0.9rem;
+}
+
+
+
+
+
+input[type="submit"]{
+    padding: 10px 25px;
+  font-family: "VT323", "Roboto Mono", monospace;
+  font-size: 13px;
+  background: darkblue;
+  color:white;
+  border: 2px solid white;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+  width: 100%;
+  max-width: 200px;
+}
+input[type="submit"]:hover { 
+  background:  rgb(0, 0, 234);
+  color:  white;
+  filter: brightness(1.1); 
+}
+
+input[type="reset"]{
+    padding: 10px 25px;
+  font-family: "VT323", "Roboto Mono", monospace;
+  font-size: 13px;
+  background: darkblue;
+  color:white;
+  border: 2px solid white;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+  width: 100%;
+  max-width: 200px;
+}
+input[type="reset"]:hover { 
+  background:  rgb(0, 0, 234);
+  color:  white;
+  filter: brightness(1.1); 
+}
