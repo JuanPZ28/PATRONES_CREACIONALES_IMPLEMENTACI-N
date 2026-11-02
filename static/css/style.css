@@ -48,6 +48,7 @@ body.pipboy {
   flex: 0 0 500px;
   max-width: 500px;
   min-width: 300px;
+  max-height: 1100px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   transition: transform 0.2s, box-shadow 0.2s;
 }
