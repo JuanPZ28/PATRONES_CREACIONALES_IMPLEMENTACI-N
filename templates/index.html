@@ -124,7 +124,18 @@ document.getElementById('cargo').addEventListener('change', function() {
 });
 
 </script>
+<center><h2>Patron state</h2></center>
+    <form action="/state" method="post" id="botonpaqueteForm" onsubmit="state(event)">
+        <div class="botones">
+            <center>
+                <input
+                    type="submit"
+                    value="MOVER LOS PAQUETES"
+                >
+            </center>
+        </div>
 
+    </form>
     </section>
 
     <section class="card1">
@@ -280,7 +291,188 @@ document.getElementById('cargo').addEventListener('change', function() {
 
 
 
+<center>
+    <h2>Paquetes ligeros registrados</h2>
+</center>
 
+<div class="tabla-conductores">
+
+    {% if paquetes_ligeros %}
+
+        <table>
+    <thead>
+        <tr>
+            <th>Fecha de envío</th>
+            <th>Descripción</th>
+            <th>Peso</th>
+            <th>Ancho</th>
+            <th>Alto</th>
+            <th>Profundo</th>
+            <th>Valor declarado</th>
+            <th>Categoría</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for paquete in paquetes_ligeros %}
+        <tr>
+            <td>{{ paquete[0] }}</td>
+            <td>{{ paquete[1] }}</td>
+            <td>{{ paquete[2] }}</td>
+            <td>{{ paquete[3] }}</td>
+            <td>{{ paquete[4] }}</td>
+            <td>{{ paquete[5] }}</td>
+            <td>{{ paquete[6] }}</td>
+            <td>{{ paquete[7] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+    <p>No hay paquetes ligeros registrados.</p>
+{% endif %}
+
+
+</div>
+
+<center>
+    <h2>Paquetes pesados registrados</h2>
+</center>
+
+<div class="tabla-conductores">
+
+    {% if paquetes_pesados %}
+
+        <table>
+    <thead>
+        <tr>
+            <th>Fecha de envío</th>
+            <th>Descripción</th>
+            <th>Peso</th>
+            <th>Ancho</th>
+            <th>Alto</th>
+            <th>Profundo</th>
+            <th>Valor declarado</th>
+            <th>Categoría</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for paquete1 in paquetes_pesados %}
+        <tr>
+            <td>{{ paquete1[0] }}</td>
+            <td>{{ paquete1[1] }}</td>
+            <td>{{ paquete1[2] }}</td>
+            <td>{{ paquete1[3] }}</td>
+            <td>{{ paquete1[4] }}</td>
+            <td>{{ paquete1[5] }}</td>
+            <td>{{ paquete1[6] }}</td>
+            <td>{{ paquete1[7] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+    <p>No hay paquetes pesados registrados.</p>
+{% endif %}
+
+
+</div>
+
+
+<center>
+    <h2>Paquetes en empaque</h2>
+</center>
+
+<div class="tabla-conductores">
+
+    {% if lista_empacados %}
+
+        <table>
+    <thead>
+        <tr>
+            <th>Fecha de envío</th>
+            <th>Descripción</th>
+            <th>Peso</th>
+            <th>Ancho</th>
+            <th>Alto</th>
+            <th>Profundo</th>
+            <th>Valor declarado</th>
+            <th>Categoría</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for paquete2 in lista_empacados %}
+        <tr>
+            <td>{{ paquete2[0] }}</td>
+            <td>{{ paquete2[1] }}</td>
+            <td>{{ paquete2[2] }}</td>
+            <td>{{ paquete2[3] }}</td>
+            <td>{{ paquete2[4] }}</td>
+            <td>{{ paquete2[5] }}</td>
+            <td>{{ paquete2[6] }}</td>
+            <td>{{ paquete2[7] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+    <p>No hay paquetes pesados registrados.</p>
+{% endif %}
+
+
+</div>
+
+
+
+<center>
+    <h2>Paquetes en ruta</h2>
+</center>
+
+<div class="tabla-conductores">
+
+    {% if lista_enruta %}
+
+        <table>
+    <thead>
+        <tr>
+            <th>Fecha de envío</th>
+            <th>Descripción</th>
+            <th>Peso</th>
+            <th>Ancho</th>
+            <th>Alto</th>
+            <th>Profundo</th>
+            <th>Valor declarado</th>
+            <th>Categoría</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for paquete3 in lista_enruta %}
+        <tr>
+            <td>{{ paquete3[0] }}</td>
+            <td>{{ paquete3[1] }}</td>
+            <td>{{ paquete3[2] }}</td>
+            <td>{{ paquete3[3] }}</td>
+            <td>{{ paquete3[4] }}</td>
+            <td>{{ paquete3[5] }}</td>
+            <td>{{ paquete3[6] }}</td>
+            <td>{{ paquete3[7] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+    <p>No hay paquetes en ruta.</p>
+{% endif %}
+
+
+</div>
 
     </section>
 
@@ -377,10 +569,82 @@ document.getElementById('cargo').addEventListener('change', function() {
     </form>
 </center>
 
+<center><h2>Patron Chain of responsability</h2></center>
 
 
+    <form action="/chain" method="POST" id="chainForm" onsubmit="chain(event)">
 
-    </section>
+        <h2>Registro de paquetes</h2>
+
+        <!-- Fecha de envio -->
+        <div class="form-group">
+            <label for="fecha_salida">Fecha de Envio:</label>
+            <input
+                type="date"
+                id="fecha_envio"
+                name="fecha_envio"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="descripcion">Descripcion:</label>
+            <input type="text" id="descripcion" name="descripcion" required>
+        </div>
+
+        <div class="form-group">
+            <label for="peso">Peso:</label>
+            <input type="number" id="peso" name="peso" required>
+        </div>
+
+        <div class="form-group">
+            <label for="ancho">Ancho (cm):</label>
+            <input type="number" id="ancho" name="ancho" required>
+        </div>
+
+        <div class="form-group">
+            <label for="alto">Alto (cm):</label>
+            <input type="number" id="alto" name="alto" required>
+        </div>
+
+        <div class="form-group">
+            <label for="profundo">Profundo (cm):</label>
+            <input type="number" id="profundo" name="profundo" required>
+        </div>
+
+        <div class="form-group">
+            <label for="valor">Valor declarado:</label>
+            <input type="number" id="valor" name="valor" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="Categoria">Categoria:</label>
+            <select id="categoria" name="categoria" required>
+            <option value="">-- Selecciona --</option>
+            <option value="Fragil">Fragil</option>
+            <option value="Normal">Normal</option>
+            </select>
+        </div>
+
+
+        <div class="botones">
+            <center>
+                <input
+                    type="submit"
+                    value="Registrar Paquete"
+                >
+
+                <input
+                    type="reset"
+                    value="Limpiar / Reset"
+                >
+            </center>
+        </div>
+
+    </form>
+
+
+</section>
 
 
   </main>
@@ -399,5 +663,55 @@ function singleton() {
             }
     });
   }
+
+function chain(event) {
+    event.preventDefault();
+    const formulario = document.getElementById('chainForm');
+    fetch('/chain', {
+        method: 'POST',
+        body: new FormData(formulario)
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        if (data.mensaje) {
+            alert(data.mensaje);
+        }
+
+        if (data.estado) {
+            window.location.href = data.redirect;
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Ocurrió un error al registrar el paquete");
+    });
+}
+  
+
+
+function state(event) {
+    event.preventDefault();
+    const formulario = document.getElementById('botonpaqueteForm');
+    fetch('/state', {
+        method: 'POST',
+        body: new FormData(formulario)
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        if (data.mensaje) {
+            alert(data.mensaje);
+        }
+
+        if (data.estado) {
+            window.location.href = data.redirect;
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Ocurrió un error al mover el paquete");
+    });
+}
 </script>
 </html>

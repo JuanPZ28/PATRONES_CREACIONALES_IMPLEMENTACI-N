@@ -8,11 +8,97 @@ app = Flask(__name__)
 lista_empleados = []
 lista_conductores = []
 lista_viajes=[]
+lista_paquetes_ligeros=[]
+lista_paquetes_pesados=[]
+lista_paquetes_empacados=[]
+lista_paquetes_enruta=[]
+contador_state=0
+paquete_state = None
+#---------------------------------------------------PATRONES DE COMPORTAMIENTO-------------------------------------------------------------------
+#PATRON CHAIN OF RESPONSABILITY----------------------
+"""Para este patorn, nuestro objetivo es centrarlo en brindar soporte a la simulacion de registro de paquetes para la empres transportadora. 
+Esto mediante dos soportes donde 1 se encarga de registrar los paquetes que sean iguales o menores al peso maximo y otro para que se encargue 
+de aquellos paquetes que pesen mas que el peso maximo llegando hasta un limite de 40kg."""
+
+class Soportepaqueteria:
+    def __init__(self, siguiente=None):
+        self.siguiente = siguiente
+
+    def atender(self, fecha_envio,descripcion,peso,ancho,alto,profundo, valor, categoria):
+        if self.siguiente:
+            return self.siguiente.atender(fecha_envio,descripcion,peso,ancho,alto,profundo, valor, categoria)
+
+        return "El paquete no puede ser transportado por exceso de peso"
+
+class Soportepaqueteligero(Soportepaqueteria):
+    def atender(self, fecha_envio,descripcion,peso,ancho,alto,profundo, valor, categoria):
+        if int(peso) <= 20:
+            paqueteligero=[fecha_envio,descripcion,peso,ancho,alto,profundo, valor, categoria]
+            lista_paquetes_ligeros.append(paqueteligero)
+            return "Paquete ligero registrado"
+        return super().atender(fecha_envio,descripcion,peso,ancho,alto,profundo, valor, categoria)
+
+
+class Soportepaquetepesado(Soportepaqueteria):
+    def atender(self, fecha_envio,descripcion,peso,ancho,alto,profundo, valor, categoria):
+        if int(peso) <= 40:
+            paquetepesado=[fecha_envio,descripcion,peso,ancho,alto,profundo, valor, categoria]
+            lista_paquetes_pesados.append(paquetepesado)
+            return "Paquete pesado registrado"
+        return super().atender(fecha_envio,descripcion,peso,ancho,alto,profundo, valor, categoria)
+
+#PATRON STATE--------------------------------------------------------------------------------------------------------------------------------------
+"""ESte patorn solventa el seguimiento del paquete, migrando todos los paquetes a unas tablas llamadas empcadando y 
+en camino, para simular el patorn state que se solicita"""
+
+#Interfaz primaria 
+class EstadoPaquete:
+
+    def procesar(self, paquete):
+        pass
+
+
+# Estado registrado
+class Registrado(EstadoPaquete):
+
+    def procesar(self, paquete):
+        paquete.estado = Empaque()
+        return "Los paquetes se encuentran registrados"
+
+
+# Estado en empque
+class Empaque(EstadoPaquete):
+
+    def procesar(self, paquete):
+        lista_paquetes_empacados.extend(lista_paquetes_pesados)
+        lista_paquetes_empacados.extend(lista_paquetes_ligeros)
+        lista_paquetes_ligeros.clear()
+        lista_paquetes_pesados.clear()
+        paquete.estado = enRuta()
+        return "Los paquetes estan siendo empacados"
+
+
+# Estado en ruta
+class enRuta(EstadoPaquete):
+
+    def procesar(self, paquete):
+        lista_paquetes_enruta.extend(lista_paquetes_empacados)
+        lista_paquetes_empacados.clear()
+        return "Los paquetes estan en ruta"
+
+
+# Contexto
+class Paquete:
+
+    def __init__(self):
+        self.estado = Registrado()
+
+    def procesar(self):
+        return self.estado.procesar(self)
 
 
 
-
-
+#---------------------------------------------------PATRONES DE COMPORTAMIENTO-------------------------------------------------------------------
 class conexionDB:
 
     instancia = None
@@ -235,13 +321,21 @@ class FactoryEmpleado:
 
 
 def reiniciar_listas():
-
+    global contador_state,paquete_state
 
     lista_empleados.clear()
 
     lista_conductores.clear()
 
     lista_viajes.clear()
+
+    lista_paquetes_ligeros.clear()
+    lista_paquetes_pesados.clear()
+
+    lista_paquetes_empacados.clear()
+    lista_paquetes_enruta.clear()
+    contador_state=0
+    paquete_state = None
 
 
 
@@ -255,7 +349,13 @@ def hello_world():
     return render_template(
         "index.html",
         empleados=lista_empleados,
-        conductores=lista_conductores
+        conductores=lista_conductores,
+        viajes=lista_viajes,
+        paquetes_ligeros=lista_paquetes_ligeros,
+        paquetes_pesados=lista_paquetes_pesados,
+        lista_empacados=lista_paquetes_empacados,
+        lista_enruta=lista_paquetes_enruta
+        
     )
 
 
@@ -265,7 +365,11 @@ def empleados():
         "index.html",
         empleados=lista_empleados,
         conductores=lista_conductores,
-        viajes=lista_viajes
+        viajes=lista_viajes,
+        paquetes_ligeros=lista_paquetes_ligeros,
+        paquetes_pesados= lista_paquetes_pesados,
+        lista_empacados=lista_paquetes_empacados,
+        lista_enruta=lista_paquetes_enruta
     )
 
 @app.route("/factory", methods=["POST"])
@@ -362,6 +466,58 @@ def singleton1():
     return jsonify({
             "mensaje": mensaje
         })
+
+@app.route("/chain",methods=["POST"] )
+def chain1():
+    soporte2 = Soportepaquetepesado()
+    soporte1 = Soportepaqueteligero(soporte2)
+
+    fecha_envio = request.form.get("fecha_envio")
+    descripcion = request.form.get("descripcion")
+    peso = request.form.get("peso")
+    ancho = request.form.get("ancho")
+    alto = request.form.get("alto")
+    profundo = request.form.get("profundo")
+    valor = request.form.get("valor")
+    categoria = request.form.get("categoria")
+
+    soportepaqueteria=soporte1.atender(fecha_envio,descripcion,peso,ancho,alto,profundo, valor, categoria)
+    mensaje=soportepaqueteria
+
+    return jsonify({
+        "mensaje": mensaje,
+        "estado": True,
+        "redirect": url_for('empleados')
+    })
+
+@app.route("/state", methods=["POST"])
+def state1():
+    global contador_state, paquete_state
+
+    if len(lista_paquetes_ligeros) == 0 and len(lista_paquetes_pesados) == 0 and paquete_state== None:
+        return jsonify({
+            "mensaje": "Listas despachadas o vacías",
+            "estado": True,
+            "redirect": url_for('empleados')
+        })
+
+    if contador_state == 0:
+        paquete_state = Paquete()
+
+    mensaje = paquete_state.procesar()
+    contador_state += 1
+
+    if contador_state >= 3:
+        contador_state = 0
+        paquete_state = None
+
+    return jsonify({
+        "mensaje": mensaje,
+        "estado": True,
+        "redirect": url_for('empleados')
+    })
+
+
 
 @app.route("/reboot", methods=["POST"])
 def reboot1():
